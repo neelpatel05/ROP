@@ -1,0 +1,41 @@
+Return to Libc
+
+Goal - Execute system("/bin/sh")
+No shellcode required
+
+Find addresses of following three functions
+1) system()
+2) exit()
+3) "/bin/sh" in libc
+
+Original Stack:
+arg_2
+arg_1
+saved EIP
+saved EBP
+local_variables
+
+Return-2-lic stack:
+ptr to '/bin/sh'
+bogus ret addr
+system()
+0x41414141
+0x41414141
+
+ROP Gadgets
+Chunks of code from executable memory
+eg pop-ret, pop-pop-ret etc
+
+Bypassing DEP/NX
+This DEP protection can be bypassed by calling code from executable regions. Memory mapped space and text region in memory have executable codes.
+
+ASLR
+Even if ASLR is truned on only 8 bits from the address changes. Can be bypassed by brute forcing the 8 bit addreses. Only starting address of libc changes. Offsets always remain same.
+
+
+Return 2 libc attack
+offset 42
+system addr 0xb7e45da0
+exit addr 0xb7e399d0
+/bin/sh addr 0xb7f66a0b
+
