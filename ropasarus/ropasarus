@@ -3,3 +3,25 @@ Ropasaurus
 system addr 0xb7e45da0
 exit addr 0xb7e399d0
 /bin/sh addr 0xb7f66a0b
+
+Goal - to execute "cat /etc/passwd"
+
+To achieve goal:
+1) Find the memory we can write "cat /etc/passwd"
+2) Fing a function that can write to the memory
+
+1)
+Do objdump -x to find out the space used by the binary
+ - .dynamic has 208 (d0) bytes free. Thus it is a good location for storing the "cat /etc/passwd" (cmd)
+ - .dynamic address = 0x08049530
+
+2) Find a function that can write "cat /etc/passwd" to the memory address at 0x08049530
+
+We have read() and write() function available in the binary.
+read() function can be used to read the data from the socket and write it to memory
+read() function has 3 parameters. stdin, buffer, length
+
+read() address = 0x0804832c (objdump -D ./rop | grep read)
+write() address = 0x8048442 (objdump -D ./rop | grep write)
+
+
